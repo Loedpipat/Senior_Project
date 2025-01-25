@@ -15,3 +15,13 @@ This project aims to address the challenges of network resource management in Io
 - Improve the quality of service (QoS) and energy efficiency for IoT devices in smart buildings.
 
 ---
+
+## Quick Links to Setup Guides
+- [Containernet Guide](./Containernet.md)  
+  Instructions for setting up and using Containernet, a network emulation tool for testing SDN scenarios.
+  
+- [OpenDaylight Guide](./OpenDaylight.md)  
+  Step-by-step instructions for installing and configuring the OpenDaylight controller, a core component for SDN management.
+  
+- [OpenFlow Manager Guide](./OpenFlowManager.md)  
+  A detailed guide for setting up and configuring the OpenFlow Manager (OFM) application, used for managing SDN networks.
