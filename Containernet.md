@@ -74,4 +74,26 @@
     ```bash
     $ sudo apt install iperf3
     $ sudo apt install wireshark
+    $ sudo apt install htop 
+    ```
+## Extra Command
+- Check Existing Containers:
+    ```bash
+    $ sudo docker ps -a
+    ```
+- Remove the Existing Container:
+    ```bash
+    $ sudo docker rm -f mn.sta1
+    ```
+- Restart Docker:
+    ```bash
+    $ sudo systemctl restart docker
+    ```
+- *Stop all running containers (if any):
+    ```bash
+    $ sudo docker stop $(sudo docker ps -aq)
+    ```
+- *Remove all containers:
+    ```bash
+    $ sudo docker rm $(sudo docker ps -aq)
     ```
