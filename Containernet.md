@@ -97,3 +97,13 @@
     ```bash
     $ sudo docker rm $(sudo docker ps -aq)
     ```
+## Note!!
+    ```bash
+    containernet> sta1 lsb_releas -a
+    containernet> sta1 df
+    containernet> sta1 iw dev
+    containernet> sta1 iw dev sta1-wlan0 scan
+    containernet> sta1 iw dev sta1-wlan0 connect new-ssid
+    containernet> sta1 iw dev sta1-wlan0 info
+    containernet> sta1 iw dev sta1-wlan0 link
+    ```
