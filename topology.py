@@ -3,6 +3,7 @@
 from containernet.net import Containernet
 from containernet.node import DockerSta
 from containernet.cli import CLI
+from containernet.link import TCLink
 from containernet.term import makeTerm
 from mininet.log import info, setLogLevel
 from mininet.node import Controller, RemoteController
@@ -32,21 +33,24 @@ def topology():
     net.configureWifiNodes()
 
     info('*** Creating links\n')
-    net.addLink(ap1, s1)
+    net.addLink(ap1, s1, cls=TCLink, delay='100ms', bw=10)
 
-    net.addLink(sta1, ap1)
-    net.addLink(sta2, ap1)
+    net.addLink(sta1, ap1, cls=TCLink, delay='100ms', bw=1)
+    net.addLink(sta2, ap1, cls=TCLink, delay='100ms', bw=1)
 
-    net.addLink(s1, h1)
+    net.addLink(s1, h1, cls=TCLink, delay='100ms', bw=10)
 
     info('*** Starting network\n')
     net.start()
     c0.start()
     ap1.start([c0])
     s1.start([c0])
+    
+    sta1.cmd("apt-get update && apt-get install -y iw wireless-tools ethtool iproute2 net-tools")
+    sta2.cmd("apt-get update && apt-get install -y iw wireless-tools ethtool iproute2 net-tools")
 
-    makeTerm(sta1, cmd="bash -c 'apt-get update && apt-get install iw wireless-tools ethtool iproute2 net-tools -y;'")
-    makeTerm(sta2, cmd="bash -c 'apt-get update && apt-get install iw wireless-tools ethtool iproute2 net-tools -y;'")
+    sta1.cmd('iw dev sta1-wlan0 connect new-ssid')
+    sta2.cmd('iw dev sta2-wlan0 connect new-ssid')
 
     info('*** Running CLI\n')
     CLI(net)
