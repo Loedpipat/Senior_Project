@@ -97,6 +97,16 @@
     ```bash
     $ sudo docker rm $(sudo docker ps -aq)
     ```
+- *Use Linux without GUI:
+    ```bash
+    $ sudo systemctl set-default multi-user.target
+    $ sudo reboot
+    ```
+- *Use Linux with GUI:
+    ```bash
+    $ sudo systemctl set-default graphical.target
+    $ sudo reboot
+    ```
 ## Note!!
     ```bash
     containernet> sta1 lsb_releas -a
