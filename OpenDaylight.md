@@ -100,3 +100,51 @@ These are configured when the user installs the virtual machine.
     $ ./bin/karaf
     ```
 - Access the web interface at: http://192.168.56.201:8181/index.html
+
+## 5. Ngrok
+Since Google Colab cannot access your local network (192.168.x.x) directly, we will use ngrok to create a secure SSH tunnel that exposes your OpenDaylight (ODL) server to the internet.
+- Install ngrok on Your Linux Machine (Where ODL is Running):
+    - Linux
+        ```bash
+        $ wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-stable-linux-amd64.zip
+        $ unzip ngrok-stable-linux-amd64.zip
+        $ sudo mv ngrok /usr/local/bin
+        ```
+- Authenticate ngrok (Only Required Once):
+    - 1.Go to the ngrok Dashboard.
+    - 2.Copy your Auth Token.
+    - 3.Run the following command on your Linux machine:
+        ```bash
+        $ ngrok authtoken YOUR_NGROK_AUTH_TOKEN
+        ```
+- Start ngrok to Expose OpenDaylight:
+    - Since OpenDaylight runs on port 8181, start ngrok on the Linux machine where ODL is running:
+        ```bash
+        $ ngrok http 8181
+        ```
+- Modify Your Google Colab Script:
+    - Now, in Google Colab, modify your script to use the new ngrok URL:
+        ```bash
+        import requests
+        from requests.auth import HTTPBasicAuth
+
+        # Use the ngrok public URL generated in Step 3
+        ODL_IP = "randomid.ngrok.io"  # Replace with your actual ngrok URL
+        ODL_PORT = "443"  # Use HTTPS port 443 for ngrok
+        USERNAME = "admin"
+        PASSWORD = "admin"
+
+        # API URL for OpenFlow data
+        url = f"https://{ODL_IP}:{ODL_PORT}/restconf/operational/opendaylight-inventory:nodes"
+
+        # Send GET request with authentication
+        response = requests.get(url, auth=HTTPBasicAuth(USERNAME, PASSWORD), headers={"Accept": "application/json"})
+
+        # Check response status
+        if response.status_code == 200:
+            print("Successfully fetched data!")
+            print(response.json())  # Display OpenFlow data
+        else:
+            print(f"Error! Status Code: {response.status_code}")
+            print(response.text)
+        ```
