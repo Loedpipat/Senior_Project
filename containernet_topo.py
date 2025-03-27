@@ -81,14 +81,6 @@ def topology():
 
     h1.cmd('ifconfig h1-eth0 10.0.0.10 netmask 255.255.255.0 up')
 
-    info('*** Verifying connectivity\n')
-    for sta in stations:
-        result = sta.cmd(f'ping -c 3 10.0.0.10')
-        info(result)
-
-    info('Pingall completed')
-
-    info('*** Running CLI\n')
     CLI(net)
 
     info('*** Stopping network\n')
