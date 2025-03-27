@@ -65,13 +65,13 @@
     - If use script
     ```bash
     $ cd mininet-wifi
-    $ sudo python lille_star_topology.py
+    $ sudo python3 lille_star_topology.py
     ```
 - OpenFlow Table Command:
     ```bash
     mininet-wifi $ h1 ifconfig
     mininet-wifi $ sta1 iwconfig
-    mininet-wifi $ sh ovs-ofctl -O OpenFlow13 dump-flows s1
+    mininet-wifi $ 
     ```
 ## 4. Install Extension Tools
 - More tools if needed:
