@@ -1,0 +1,253 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36" version="26.1.3">
+  <diagram name="Page-1" id="c37626ed-c26b-45fb-9056-f9ebc6bb27b6">
+    <mxGraphModel dx="24280" dy="16800" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1100" pageHeight="850" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-2" value="" style="shape=mxgraph.cisco.servers.storage_server;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="6981" y="-4774" width="180" height="276.66" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-3" value="" style="shape=mxgraph.cisco.switches.layer_3_switch;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="3560" y="-3115" width="144" height="144" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-4" value="" style="shape=mxgraph.cisco.switches.layer_3_switch;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="10876" y="-3035" width="144" height="144" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-5" value="" style="shape=mxgraph.cisco.switches.layer_3_switch;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="3560" y="-983" width="144" height="144" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-6" value="" style="shape=mxgraph.cisco.switches.layer_3_switch;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="10876" y="-903" width="144" height="144" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-7" value="" style="shape=mxgraph.cisco.switches.workgroup_switch;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="-223" y="937" width="181.8" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-13" value="" style="shape=mxgraph.cisco.controllers_and_modules.system_controller;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="14458" y="-1990" width="196" height="186.36" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-14" value="" style="shape=mxgraph.cisco.wireless.wireless_bridge;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="-1160" y="1296" width="148.77" height="121" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-39" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="-1409.62" y="1696" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-40" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="-1680" y="1696" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-41" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="-1139" y="1696" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-42" value="" style="shape=mxgraph.cisco.computers_and_peripherals.video_camera;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="-898" y="1687" width="113.49" height="166" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-43" value="" style="shape=mxgraph.cisco.computers_and_peripherals.video_camera;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="-626" y="1690" width="113.49" height="166" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-45" value="" style="shape=mxgraph.cisco.modems_and_phones.mobile_access_ip_phone;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="-447" y="2245" width="165" height="146.67" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-46" value="" style="shape=mxgraph.cisco.wireless.wireless_bridge;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="727" y="1293" width="148.77" height="121" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-47" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="477.3800000000001" y="1693" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-48" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="207" y="1693" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-49" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="748" y="1693" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-50" value="" style="shape=mxgraph.cisco.computers_and_peripherals.video_camera;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="989" y="1684" width="113.49" height="166" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-51" value="" style="shape=mxgraph.cisco.computers_and_peripherals.video_camera;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="1261" y="1687" width="113.49" height="166" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-52" value="" style="shape=mxgraph.cisco.modems_and_phones.mobile_access_ip_phone;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="-37" y="2245" width="165" height="146.67" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-53" value="" style="shape=mxgraph.cisco.switches.workgroup_switch;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="3534" y="933" width="181.8" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-54" value="" style="shape=mxgraph.cisco.wireless.wireless_bridge;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="2597" y="1292" width="148.77" height="121" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-55" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="2347.38" y="1692" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-56" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="2077" y="1692" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-57" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="2618" y="1692" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-58" value="" style="shape=mxgraph.cisco.computers_and_peripherals.video_camera;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="2859" y="1683" width="113.49" height="166" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-59" value="" style="shape=mxgraph.cisco.computers_and_peripherals.video_camera;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="3131" y="1686" width="113.49" height="166" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-60" value="" style="shape=mxgraph.cisco.modems_and_phones.mobile_access_ip_phone;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="3310" y="2241" width="165" height="146.67" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-61" value="" style="shape=mxgraph.cisco.wireless.wireless_bridge;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="4484" y="1289" width="148.77" height="121" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-62" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="4234.38" y="1689" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-63" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="3964" y="1689" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-64" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="4505" y="1689" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-65" value="" style="shape=mxgraph.cisco.computers_and_peripherals.video_camera;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="4746" y="1680" width="113.49" height="166" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-66" value="" style="shape=mxgraph.cisco.computers_and_peripherals.video_camera;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="5018" y="1683" width="113.49" height="166" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-67" value="" style="shape=mxgraph.cisco.modems_and_phones.mobile_access_ip_phone;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="3720" y="2241" width="165" height="146.67" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-98" value="" style="shape=mxgraph.cisco.switches.workgroup_switch;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="7105" y="917" width="181.8" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-99" value="" style="shape=mxgraph.cisco.wireless.wireless_bridge;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="6168" y="1276" width="148.77" height="121" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-100" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="5918.38" y="1676" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-101" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="5648" y="1676" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-102" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="6189" y="1676" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-103" value="" style="shape=mxgraph.cisco.computers_and_peripherals.video_camera;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="6430" y="1667" width="113.49" height="166" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-104" value="" style="shape=mxgraph.cisco.computers_and_peripherals.video_camera;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="6702" y="1670" width="113.49" height="166" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-105" value="" style="shape=mxgraph.cisco.modems_and_phones.mobile_access_ip_phone;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="6881" y="2225" width="165" height="146.67" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-106" value="" style="shape=mxgraph.cisco.wireless.wireless_bridge;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="8055" y="1273" width="148.77" height="121" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-107" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="7805.38" y="1673" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-108" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="7535" y="1673" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-109" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="8076" y="1673" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-110" value="" style="shape=mxgraph.cisco.computers_and_peripherals.video_camera;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="8317" y="1664" width="113.49" height="166" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-111" value="" style="shape=mxgraph.cisco.computers_and_peripherals.video_camera;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="8589" y="1667" width="113.49" height="166" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-112" value="" style="shape=mxgraph.cisco.modems_and_phones.mobile_access_ip_phone;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="7291" y="2225" width="165" height="146.67" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-113" value="" style="shape=mxgraph.cisco.switches.workgroup_switch;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="10862" y="913" width="181.8" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-114" value="" style="shape=mxgraph.cisco.wireless.wireless_bridge;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="9925" y="1272" width="148.77" height="121" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-115" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="9675.380000000001" y="1672" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-116" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="9405" y="1672" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-117" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="9946" y="1672" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-118" value="" style="shape=mxgraph.cisco.computers_and_peripherals.video_camera;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="10187" y="1663" width="113.49" height="166" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-119" value="" style="shape=mxgraph.cisco.computers_and_peripherals.video_camera;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="10459" y="1666" width="113.49" height="166" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-120" value="" style="shape=mxgraph.cisco.modems_and_phones.mobile_access_ip_phone;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="10638" y="2221" width="165" height="146.67" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-121" value="" style="shape=mxgraph.cisco.wireless.wireless_bridge;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="11812" y="1269" width="148.77" height="121" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-122" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="11562.380000000001" y="1669" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-123" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="11292" y="1669" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-124" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="11833" y="1669" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-125" value="" style="shape=mxgraph.cisco.computers_and_peripherals.video_camera;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="12074" y="1660" width="113.49" height="166" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-126" value="" style="shape=mxgraph.cisco.computers_and_peripherals.video_camera;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="12346" y="1663" width="113.49" height="166" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-127" value="" style="shape=mxgraph.cisco.modems_and_phones.mobile_access_ip_phone;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="11048" y="2221" width="165" height="146.67" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-128" value="" style="shape=mxgraph.cisco.switches.workgroup_switch;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="14468" y="910" width="181.8" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-129" value="" style="shape=mxgraph.cisco.wireless.wireless_bridge;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="13531" y="1269" width="148.77" height="121" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-130" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="13281.380000000001" y="1669" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-131" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="13011" y="1669" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-132" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="13552" y="1669" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-133" value="" style="shape=mxgraph.cisco.computers_and_peripherals.video_camera;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="13793" y="1660" width="113.49" height="166" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-134" value="" style="shape=mxgraph.cisco.computers_and_peripherals.video_camera;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="14065" y="1663" width="113.49" height="166" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-135" value="" style="shape=mxgraph.cisco.modems_and_phones.mobile_access_ip_phone;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="14244" y="2218" width="165" height="146.67" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-136" value="" style="shape=mxgraph.cisco.wireless.wireless_bridge;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="15418" y="1266" width="148.77" height="121" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-137" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="15168.380000000001" y="1666" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-138" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="14898" y="1666" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-139" value="" style="shape=mxgraph.cisco.wireless.wireless;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="15439" y="1666" width="82" height="148.49" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-140" value="" style="shape=mxgraph.cisco.computers_and_peripherals.video_camera;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="15680" y="1657" width="113.49" height="166" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-141" value="" style="shape=mxgraph.cisco.computers_and_peripherals.video_camera;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="15952" y="1660" width="113.49" height="166" as="geometry" />
+        </mxCell>
+        <mxCell id="NaNxh4Wz9e8pNpz_A6Kz-142" value="" style="shape=mxgraph.cisco.modems_and_phones.mobile_access_ip_phone;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="14654" y="2218" width="165" height="146.67" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
