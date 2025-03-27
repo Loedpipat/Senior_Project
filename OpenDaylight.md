@@ -103,6 +103,8 @@ These are configured when the user installs the virtual machine.
 
 ## 5. Ngrok
 Since Google Colab cannot access your local network (192.168.x.x) directly, we will use ngrok to create a secure SSH tunnel that exposes your OpenDaylight (ODL) server to the internet.
+#### **Webpage**: [Ngrok](https://dashboard.ngrok.com/get-started/setup/windows)
+#### **Medium**: [A Developer’s Gateway to Localhost](https://osamadev.medium.com/ngrok-a-developers-gateway-to-localhost-7132dc1f4117)
 - Install ngrok on Your Linux Machine (Where ODL is Running):
     - Linux
         ```bash
