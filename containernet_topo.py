@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import time  # Import the time module to handle time-related tasks
 
 from containernet.net import Containernet
 from containernet.node import DockerSta
@@ -10,7 +11,7 @@ from mininet.node import Controller, RemoteController
 def topology():
     net = Containernet()
 
-    info("*** Adding controller\n")
+    info("*** Adding controller ODL: 192.168.56.201\n")
     c0 = net.addController('c0', controller=RemoteController, ip='192.168.56.201', port=6633)
 
     info("*** Adding Access Points\n")
@@ -28,55 +29,83 @@ def topology():
     info("*** Adding OpenFlow switches\n")
     switches = {f's{i}': net.addSwitch(f's{i}') for i in range(1, 11)}
 
-    info('*** Adding Docker Stations (IoT Devices with Different CPU Limits)\n')
-    stations = []
-    for i in range(1, 31):
-        # Custom CPU limits based on type
-        if i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:  # IoT-LAB M3
-            cpu_limit = "0.1"
-        elif i in [11, 12, 13, 14, 15 , 16, 17, 18, 19, 20]:  # Zolertia Firefly
-            cpu_limit = "0.2"
-        else:  # Decawave DWM1001
-            cpu_limit = "0.3"
+    info('*** Adding Docker Stations (IoT Devices)\n')
+    Ms = []
+    Zs = []
+    Ds = []
+    WCAMs = []
+    WLCAMs = []
 
-        sta = net.addStation(
-            f'sta{i}',
-            ip=f'10.0.0.{i}',
-            mac=f'00:02:00:00:00:0{i}',
-            cls=DockerSta,
-            dimage="mininet-wifi-custom",
-            cpus=cpu_limit
-        )
-        stations.append(sta)
+    # IoT-LAB M3 Devices (m1 to m10)
+    m_devices = [
+        ('10.0.1.1', '00:02:00:00:01:01'), ('10.0.2.1', '00:02:00:00:02:01'),
+        ('10.0.3.1', '00:02:00:00:03:01'), ('10.0.4.1', '00:02:00:00:04:01'),
+        ('10.0.5.1', '00:02:00:00:05:01'), ('10.0.6.1', '00:02:00:00:06:01'),
+        ('10.0.7.1', '00:02:00:00:07:01'), ('10.0.8.1', '00:02:00:00:08:01'),
+        ('10.0.9.1', '00:02:00:00:09:01'), ('10.0.10.1', '00:02:00:00:0A:01')
+    ]
+    for i, (ip, mac) in enumerate(m_devices, 1):
+        sta = net.addStation(f'm{i}', ip=ip, mac=mac, cls=DockerSta, dimage="mininet-wifi-custom", cpus="0.1")
+        Ms.append(sta)
+
+    # Zolertia Firefly Devices (z1 to z10)
+    z_devices = [
+        ('10.0.1.2', '00:02:00:00:01:02'), ('10.0.2.2', '00:02:00:00:02:02'),
+        ('10.0.3.2', '00:02:00:00:03:02'), ('10.0.4.2', '00:02:00:00:04:02'),
+        ('10.0.5.2', '00:02:00:00:05:02'), ('10.0.6.2', '00:02:00:00:06:02'),
+        ('10.0.7.2', '00:02:00:00:07:02'), ('10.0.8.2', '00:02:00:00:08:02'),
+        ('10.0.9.2', '00:02:00:00:09:02'), ('10.0.10.2', '00:02:00:00:0A:02')
+    ]
+    for i, (ip, mac) in enumerate(z_devices, 1):
+        sta = net.addStation(f'z{i}', ip=ip, mac=mac, cls=DockerSta, dimage="mininet-wifi-custom", cpus="0.2")
+        Zs.append(sta)
+
+    # Decawave DWM1001 Devices (d1 to d10)
+    d_devices = [
+        ('10.0.1.3', '00:02:00:00:01:03'), ('10.0.2.3', '00:02:00:00:02:03'),
+        ('10.0.3.3', '00:02:00:00:03:03'), ('10.0.4.3', '00:02:00:00:04:03'),
+        ('10.0.5.3', '00:02:00:00:05:03'), ('10.0.6.3', '00:02:00:00:06:03'),
+        ('10.0.7.3', '00:02:00:00:07:03'), ('10.0.8.3', '00:02:00:00:08:03'),
+        ('10.0.9.3', '00:02:00:00:09:03'), ('10.0.10.3', '00:02:00:00:0A:03')
+    ]
+    for i, (ip, mac) in enumerate(d_devices, 1):
+        sta = net.addStation(f'd{i}', ip=ip, mac=mac, cls=DockerSta, dimage="mininet-wifi-custom", cpus="0.3")
+        Ds.append(sta)
+
+    # Add Wire and Wireless Cameras (WCAMs and WLCAMs)
+    info("*** Adding Wire Cameras (High CPU Usage)\n")
+    WCAMs = []
+    wcam_devices = [
+        ('10.0.1.4', '00:02:00:00:01:04'), ('10.0.2.4', '00:02:00:00:02:04'),
+        ('10.0.3.4', '00:02:00:00:03:04'), ('10.0.4.4', '00:02:00:00:04:04'),
+        ('10.0.5.4', '00:02:00:00:05:04'), ('10.0.6.4', '00:02:00:00:06:04'),
+        ('10.0.7.4', '00:02:00:00:07:04'), ('10.0.8.4', '00:02:00:00:08:04'),
+        ('10.0.9.4', '00:02:00:00:09:04'), ('10.0.10.4', '00:02:00:00:0A:04')
+    ]
+    for i, (ip, mac) in enumerate(wcam_devices, 1):
+        sta = net.addDocker(f'wcam{i}', ip=ip, mac=mac, dimage="mininet-wifi-custom", cpus="0.5")
+        WCAMs.append(sta)
+
+    info("*** Adding Wireless Cameras (High CPU Usage)\n")
+    WLCAMs = []
+    wlcam_devices = [
+        ('10.0.1.5', '00:02:00:00:01:05'), ('10.0.2.5', '00:02:00:00:02:05'),
+        ('10.0.3.5', '00:02:00:00:03:05'), ('10.0.4.5', '00:02:00:00:04:05'),
+        ('10.0.5.5', '00:02:00:00:05:05'), ('10.0.6.5', '00:02:00:00:06:05'),
+        ('10.0.7.5', '00:02:00:00:07:05'), ('10.0.8.5', '00:02:00:00:08:05'),
+        ('10.0.9.5', '00:02:00:00:09:05'), ('10.0.10.5', '00:02:00:00:0A:05')
+    ]
+    for i, (ip, mac) in enumerate(wlcam_devices, 1):
+        sta = net.addStation(f'wlcam{i}', ip=ip, mac=mac, cls=DockerSta, dimage="mininet-wifi-custom", cpus="0.5")
+        WLCAMs.append(sta)
 
     info("*** Adding host (Network Server)\n")
     server = net.addDocker('server', ip='10.0.0.200', dimage="mininet-wifi-custom", cpus="1")
 
-    info("*** Adding Surveillance Cameras (High CPU Usage)\n")
-    camera1 = net.addDocker('camera1', ip='10.0.0.101', dimage="mininet-wifi-custom", cpus="0.5")
-    camera2 = net.addStation('camera2', ip='10.0.0.102', mac=f'00:02:00:00:01:00', cls=DockerSta, dimage="mininet-wifi-custom", cpus="0.5")
-    camera3 = net.addDocker('camera3', ip='10.0.0.103', dimage="mininet-wifi-custom", cpus="0.5")
-    camera4 = net.addStation('camera4', ip='10.0.0.104', mac=f'00:02:00:00:02:00', cls=DockerSta, dimage="mininet-wifi-custom", cpus="0.5")
-    camera5 = net.addDocker('camera5', ip='10.0.0.105', dimage="mininet-wifi-custom", cpus="0.5")
-    camera6 = net.addStation('camera6', ip='10.0.0.106', mac=f'00:02:00:00:03:00', cls=DockerSta, dimage="mininet-wifi-custom", cpus="0.5")
-    camera7 = net.addDocker('camera7', ip='10.0.0.107', dimage="mininet-wifi-custom", cpus="0.5")
-    camera8 = net.addStation('camera8', ip='10.0.0.108', mac=f'00:02:00:00:04:00', cls=DockerSta, dimage="mininet-wifi-custom", cpus="0.5")
-    camera9 = net.addDocker('camera9', ip='10.0.0.109', dimage="mininet-wifi-custom", cpus="0.5")
-    camera10 = net.addStation('camera10', ip='10.0.0.110', mac=f'00:02:00:00:05:00', cls=DockerSta, dimage="mininet-wifi-custom", cpus="0.5")   
-    camera11 = net.addDocker('camera11', ip='10.0.0.111', dimage="mininet-wifi-custom", cpus="0.5")
-    camera12 = net.addStation('camera12', ip='10.0.0.112', mac=f'00:02:00:00:06:00', cls=DockerSta, dimage="mininet-wifi-custom", cpus="0.5")
-    camera13 = net.addDocker('camera13', ip='10.0.0.113', dimage="mininet-wifi-custom", cpus="0.5")
-    camera14 = net.addStation('camera14', ip='10.0.0.114', mac=f'00:02:00:00:07:00', cls=DockerSta, dimage="mininet-wifi-custom", cpus="0.5")
-    camera15 = net.addDocker('camera15', ip='10.0.0.115', dimage="mininet-wifi-custom", cpus="0.5")
-    camera16 = net.addStation('camera16', ip='10.0.0.116', mac=f'00:02:00:00:08:00', cls=DockerSta, dimage="mininet-wifi-custom", cpus="0.5")
-    camera17 = net.addDocker('camera17', ip='10.0.0.117', dimage="mininet-wifi-custom", cpus="0.5")
-    camera18 = net.addStation('camera18', ip='10.0.0.118', mac=f'00:02:00:00:09:00', cls=DockerSta, dimage="mininet-wifi-custom", cpus="0.5")
-    camera19 = net.addDocker('camera19', ip='10.0.0.119', dimage="mininet-wifi-custom", cpus="0.5")
-    camera20 = net.addStation('camera20', ip='10.0.0.120', mac=f'00:02:00:00:010:00', cls=DockerSta, dimage="mininet-wifi-custom", cpus="0.5")   
-
     info('*** Configuring WiFi nodes\n')
     net.configureWifiNodes()
 
+    # Creating links for stations and cameras
     info('*** Creating links\n')
     net.addLink(ap1, switches['s1'], cls=TCLink, delay='50ms', bw=10)
     net.addLink(ap2, switches['s1'], cls=TCLink, delay='50ms', bw=10)
@@ -89,12 +118,15 @@ def topology():
     net.addLink(ap9, switches['s5'], cls=TCLink, delay='50ms', bw=10)
     net.addLink(ap10, switches['s5'], cls=TCLink, delay='50ms', bw=10)
 
-    # Connect stations to access points (up to 30 stations, scaled)
-    for i in range(30):
-        ap = f'ap{(i // 3) + 1}'  # Distribute stations evenly to APs
-        net.addLink(stations[i], eval(ap), cls=TCLink, delay='50ms', bw=1)
+    for i in range(10):  # Only 10 stations in each category
+        ap = f'ap{i + 1}'  # Distribute stations evenly to APs
+        net.addLink(Ms[i], eval(ap), cls=TCLink, delay='50ms', bw=1)
+        net.addLink(Zs[i], eval(ap), cls=TCLink, delay='50ms', bw=1)
+        net.addLink(Ds[i], eval(ap), cls=TCLink, delay='50ms', bw=1)
+        net.addLink(WCAMs[i], eval(ap), cls=TCLink, delay='50ms', bw=5)
+        net.addLink(WLCAMs[i], eval(ap), cls=TCLink, delay='50ms', bw=5)
 
-    # Core network connections
+    # Core network connections (up to s10)
     net.addLink(switches['s1'], switches['s6'], cls=TCLink, delay='50ms', bw=10)
     net.addLink(switches['s2'], switches['s6'], cls=TCLink, delay='50ms', bw=10)
     net.addLink(switches['s3'], switches['s7'], cls=TCLink, delay='50ms', bw=10)
@@ -108,28 +140,7 @@ def topology():
 
     net.addLink(server, switches['s10'], cls=TCLink, delay='50ms', bw=10)
 
-    # Surveillance camera links
-    net.addLink(camera1, ap1, cls=TCLink, delay='50ms', bw=5)
-    net.addLink(camera2, ap1, cls=TCLink, delay='50ms', bw=5)
-    net.addLink(camera3, ap2, cls=TCLink, delay='50ms', bw=5)
-    net.addLink(camera4, ap2, cls=TCLink, delay='50ms', bw=5)
-    net.addLink(camera5, ap3, cls=TCLink, delay='50ms', bw=5)
-    net.addLink(camera6, ap3, cls=TCLink, delay='50ms', bw=5)
-    net.addLink(camera7, ap4, cls=TCLink, delay='50ms', bw=5)
-    net.addLink(camera8, ap4, cls=TCLink, delay='50ms', bw=5)
-    net.addLink(camera9, ap5, cls=TCLink, delay='50ms', bw=5)
-    net.addLink(camera10, ap5, cls=TCLink, delay='50ms', bw=5)
-    net.addLink(camera11, ap6, cls=TCLink, delay='50ms', bw=5)
-    net.addLink(camera12, ap6, cls=TCLink, delay='50ms', bw=5)
-    net.addLink(camera13, ap7, cls=TCLink, delay='50ms', bw=5)
-    net.addLink(camera14, ap7, cls=TCLink, delay='50ms', bw=5)
-    net.addLink(camera15, ap8, cls=TCLink, delay='50ms', bw=5)
-    net.addLink(camera16, ap8, cls=TCLink, delay='50ms', bw=5)
-    net.addLink(camera17, ap9, cls=TCLink, delay='50ms', bw=5)
-    net.addLink(camera18, ap9, cls=TCLink, delay='50ms', bw=5)
-    net.addLink(camera19, ap10, cls=TCLink, delay='50ms', bw=5)
-    net.addLink(camera20, ap10, cls=TCLink, delay='50ms', bw=5)
-
+    # Start network and configure nodes
     info('*** Starting network\n')
     net.start()
     c0.start()
@@ -148,48 +159,56 @@ def topology():
     for s in switches.values():
         s.start([c0])
 
+    # Ensuring WiFi connectivity
     info('*** Ensuring WiFi connectivity\n')
-    for i, sta in enumerate(stations):
-        sta.cmd(f'iw dev {sta.name}-wlan0 connect ssid-ap{(i // 3) + 1}')
+    for i, sta in enumerate(Ms):
+        sta.cmd(f'iw dev {sta.name}-wlan0 connect ssid-ap{i + 1}')
+    for i, sta in enumerate(Zs):
+        sta.cmd(f'iw dev {sta.name}-wlan0 connect ssid-ap{i + 1}')
+    for i, sta in enumerate(Ds):
+        sta.cmd(f'iw dev {sta.name}-wlan0 connect ssid-ap{i + 1}')
+    for i, sta in enumerate(WLCAMs):
+        sta.cmd(f'iw dev {sta.name}-wlan0 connect ssid-ap{i + 1}')
 
-    camera2.cmd('iw dev camera2-wlan0 connect ssid-ap1')
-    camera4.cmd('iw dev camera4-wlan0 connect ssid-ap2')
-    camera6.cmd('iw dev camera6-wlan0 connect ssid-ap3')
-    camera8.cmd('iw dev camera8-wlan0 connect ssid-ap4')
-    camera10.cmd('iw dev camera10-wlan0 connect ssid-ap5')
-    camera12.cmd('iw dev camera12-wlan0 connect ssid-ap6')
-    camera14.cmd('iw dev camera14-wlan0 connect ssid-ap7')
-    camera16.cmd('iw dev camera16-wlan0 connect ssid-ap8')
-    camera18.cmd('iw dev camera18-wlan0 connect ssid-ap9')
-    camera20.cmd('iw dev camera20-wlan0 connect ssid-ap10')
+    info('*** Assigning static routes\n')
+    for i, sta in enumerate(Ms):
+        sta.cmd(f'ifconfig {sta.name}-wlan0 10.0.{i+1}.1 netmask 255.255.0.0 up')
+    for i, sta in enumerate(Zs):
+        sta.cmd(f'ifconfig {sta.name}-wlan0 10.0.{i+1}.2 netmask 255.255.0.0 up')
+    for i, sta in enumerate(Ds):
+        sta.cmd(f'ifconfig {sta.name}-wlan0 10.0.{i+1}.3 netmask 255.255.0.0 up')
+    for i, sta in enumerate(WLCAMs):
+        sta.cmd(f'ifconfig {sta.name}-wlan0 10.0.{i+1}.5 netmask 255.255.0.0 up')
 
-    info('*** Assigning static routes \n')
-    for i, sta in enumerate(stations):
-        sta.cmd(f'ifconfig {sta.name}-wlan0 10.0.0.{i+1} netmask 255.255.255.0 up')
+    server.cmd('ifconfig server-eth0 10.0.0.200 netmask 255.255.0.0 up')
+    Ms[0].cmd('ifconfig m1-eth0 10.0.1.1 netmask 255.255.0.0 up')
 
-    camera2.cmd('ifconfig camera2-wlan0 10.0.0.102 netmask 255.255.255.0 up')
-    camera4.cmd('ifconfig camera4-wlan0 10.0.0.104 netmask 255.255.255.0 up')
-    camera6.cmd('ifconfig camera6-wlan0 10.0.0.106 netmask 255.255.255.0 up')
-    camera8.cmd('ifconfig camera8-wlan0 10.0.0.108 netmask 255.255.255.0 up')
-    camera10.cmd('ifconfig camera10-wlan0 10.0.0.110 netmask 255.255.255.0 up')
-    camera12.cmd('ifconfig camera12-wlan0 10.0.0.112 netmask 255.255.255.0 up')
-    camera14.cmd('ifconfig camera14-wlan0 10.0.0.114 netmask 255.255.255.0 up')
-    camera16.cmd('ifconfig camera16-wlan0 10.0.0.116 netmask 255.255.255.0 up')
-    camera18.cmd('ifconfig camera18-wlan0 10.0.0.118 netmask 255.255.255.0 up')
-    camera20.cmd('ifconfig camera20-wlan0 10.0.0.120 netmask 255.255.255.0 up')
+    for i, sta in enumerate(WCAMs):
+        sta.cmd(f'ifconfig {sta.name}-eth0 10.0.{i+1}.4 netmask 255.255.0.0 up')
 
-    server.cmd('ifconfig server-eth0 10.0.0.200 netmask 255.255.255.0 up')
+    # Function to ping nodes and measure time
+    def ping_node(node, target_ip):
+        start_time = time.time()  # Record the start time
+        node.cmd(f'ping -c 3 {target_ip}')  # Ping the target IP (e.g., server)
+        end_time = time.time()  # Record the end time
+        elapsed_time = end_time - start_time  # Calculate elapsed time
+        info(f"{node.name} pinged {target_ip} in {elapsed_time:.2f} seconds\n")  # Print the time taken
 
-    camera1.cmd('ifconfig camera1-eth0 10.0.0.101 netmask 255.255.255.0 up')
-    camera3.cmd('ifconfig camera3-eth0 10.0.0.103 netmask 255.255.255.0 up')
-    camera5.cmd('ifconfig camera5-eth0 10.0.0.105 netmask 255.255.255.0 up')
-    camera7.cmd('ifconfig camera7-eth0 10.0.0.107 netmask 255.255.255.0 up')
-    camera9.cmd('ifconfig camera9-eth0 10.0.0.109 netmask 255.255.255.0 up')
-    camera11.cmd('ifconfig camera11-eth0 10.0.0.111 netmask 255.255.255.0 up')
-    camera13.cmd('ifconfig camera13-eth0 10.0.0.113 netmask 255.255.255.0 up')
-    camera15.cmd('ifconfig camera15-eth0 10.0.0.115 netmask 255.255.255.0 up')
-    camera17.cmd('ifconfig camera17-eth0 10.0.0.117 netmask 255.255.255.0 up')
-    camera19.cmd('ifconfig camera19-eth0 10.0.0.119 netmask 255.255.255.0 up')
+    # Pinging for each category of devices
+    for node in Ms:
+        ping_node(node, '10.0.0.200')  # Ping the server or any node you want as the target
+    for node in Zs:
+        ping_node(node, '10.0.0.200')
+    for node in Ds:
+        ping_node(node, '10.0.0.200')
+    for node in WCAMs:
+        ping_node(node, '10.0.0.200')
+    for node in WLCAMs:
+        ping_node(node, '10.0.0.200')
+
+    # Optionally, you can ping again with a single ping (as per your original code)
+    for node in Ms:
+        ping_node(node, '10.0.0.200')  # Single ping to server or target
 
     CLI(net)
 
