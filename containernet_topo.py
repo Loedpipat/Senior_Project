@@ -120,11 +120,7 @@ def topology():
 
     for i in range(10):  # Only 10 stations in each category
         ap = f'ap{i + 1}'  # Distribute stations evenly to APs
-        net.addLink(Ms[i], eval(ap), cls=TCLink, delay='50ms', bw=1)
-        net.addLink(Zs[i], eval(ap), cls=TCLink, delay='50ms', bw=1)
-        net.addLink(Ds[i], eval(ap), cls=TCLink, delay='50ms', bw=1)
         net.addLink(WCAMs[i], eval(ap), cls=TCLink, delay='50ms', bw=5)
-        net.addLink(WLCAMs[i], eval(ap), cls=TCLink, delay='50ms', bw=5)
 
     # Core network connections (up to s10)
     net.addLink(switches['s1'], switches['s6'], cls=TCLink, delay='50ms', bw=10)
