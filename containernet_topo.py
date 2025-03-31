@@ -1,6 +1,6 @@
 #!/usr/bin/python
-import time  # Import the time module to handle time-related tasks
-
+import time
+import threading
 from containernet.net import Containernet
 from containernet.node import DockerSta
 from containernet.cli import CLI
@@ -107,34 +107,36 @@ def topology():
 
     # Creating links for stations and cameras
     info('*** Creating links\n')
-    net.addLink(ap1, switches['s1'], cls=TCLink, delay='50ms', bw=10)
-    net.addLink(ap2, switches['s1'], cls=TCLink, delay='50ms', bw=10)
-    net.addLink(ap3, switches['s2'], cls=TCLink, delay='50ms', bw=10)
-    net.addLink(ap4, switches['s2'], cls=TCLink, delay='50ms', bw=10)
-    net.addLink(ap5, switches['s3'], cls=TCLink, delay='50ms', bw=10)
-    net.addLink(ap6, switches['s3'], cls=TCLink, delay='50ms', bw=10)
-    net.addLink(ap7, switches['s4'], cls=TCLink, delay='50ms', bw=10)
-    net.addLink(ap8, switches['s4'], cls=TCLink, delay='50ms', bw=10)
-    net.addLink(ap9, switches['s5'], cls=TCLink, delay='50ms', bw=10)
-    net.addLink(ap10, switches['s5'], cls=TCLink, delay='50ms', bw=10)
+    net.addLink(ap1, switches['s1'], cls=TCLink, delay='10ms', bw=10)
+    net.addLink(ap2, switches['s1'], cls=TCLink, delay='10ms', bw=10)
+    net.addLink(ap3, switches['s2'], cls=TCLink, delay='10ms', bw=10)
+    net.addLink(ap4, switches['s2'], cls=TCLink, delay='10ms', bw=10)
+    net.addLink(ap5, switches['s3'], cls=TCLink, delay='10ms', bw=10)
+    net.addLink(ap6, switches['s3'], cls=TCLink, delay='10ms', bw=10)
+    net.addLink(ap7, switches['s4'], cls=TCLink, delay='10ms', bw=10)
+    net.addLink(ap8, switches['s4'], cls=TCLink, delay='10ms', bw=10)
+    net.addLink(ap9, switches['s5'], cls=TCLink, delay='10ms', bw=10)
+    net.addLink(ap10, switches['s5'], cls=TCLink, delay='10ms', bw=10)
 
+    # Creating links for stations and cameras
+    info('*** Creating links\n')
     for i in range(10):  # Only 10 stations in each category
         ap = f'ap{i + 1}'  # Distribute stations evenly to APs
-        net.addLink(WCAMs[i], eval(ap), cls=TCLink, delay='50ms', bw=5)
+        net.addLink(WCAMs[i], eval(ap), cls=TCLink, delay='10ms', bw=5)
 
     # Core network connections (up to s10)
-    net.addLink(switches['s1'], switches['s6'], cls=TCLink, delay='50ms', bw=10)
-    net.addLink(switches['s2'], switches['s6'], cls=TCLink, delay='50ms', bw=10)
-    net.addLink(switches['s3'], switches['s7'], cls=TCLink, delay='50ms', bw=10)
-    net.addLink(switches['s4'], switches['s7'], cls=TCLink, delay='50ms', bw=10)
-    net.addLink(switches['s5'], switches['s7'], cls=TCLink, delay='50ms', bw=10)
+    net.addLink(switches['s1'], switches['s6'], cls=TCLink, delay='10ms', bw=10)
+    net.addLink(switches['s2'], switches['s6'], cls=TCLink, delay='10ms', bw=10)
+    net.addLink(switches['s3'], switches['s7'], cls=TCLink, delay='10ms', bw=10)
+    net.addLink(switches['s4'], switches['s7'], cls=TCLink, delay='10ms', bw=10)
+    net.addLink(switches['s5'], switches['s7'], cls=TCLink, delay='10ms', bw=10)
 
-    net.addLink(switches['s6'], switches['s8'], cls=TCLink, delay='50ms', bw=10)
-    net.addLink(switches['s7'], switches['s9'], cls=TCLink, delay='50ms', bw=10)
-    net.addLink(switches['s8'], switches['s10'], cls=TCLink, delay='50ms', bw=10)
-    net.addLink(switches['s9'], switches['s10'], cls=TCLink, delay='50ms', bw=10)
+    net.addLink(switches['s6'], switches['s8'], cls=TCLink, delay='10ms', bw=10)
+    net.addLink(switches['s7'], switches['s9'], cls=TCLink, delay='10ms', bw=10)
+    net.addLink(switches['s8'], switches['s10'], cls=TCLink, delay='10ms', bw=10)
+    net.addLink(switches['s9'], switches['s10'], cls=TCLink, delay='10ms', bw=10)
 
-    net.addLink(server, switches['s10'], cls=TCLink, delay='50ms', bw=10)
+    net.addLink(server, switches['s10'], cls=TCLink, delay='10ms', bw=10)
 
     # Start network and configure nodes
     info('*** Starting network\n')
@@ -185,7 +187,7 @@ def topology():
     # Function to ping nodes and measure time
     def ping_node(node, target_ip):
         start_time = time.time()  # Record the start time
-        node.cmd(f'ping -c 3 {target_ip}')  # Ping the target IP (e.g., server)
+        node.cmd(f'ping -c 2 {target_ip}')  # Ping the target IP (e.g., server)
         end_time = time.time()  # Record the end time
         elapsed_time = end_time - start_time  # Calculate elapsed time
         info(f"{node.name} pinged {target_ip} in {elapsed_time:.2f} seconds\n")  # Print the time taken
@@ -201,10 +203,6 @@ def topology():
         ping_node(node, '10.0.0.200')
     for node in WLCAMs:
         ping_node(node, '10.0.0.200')
-
-    # Optionally, you can ping again with a single ping (as per your original code)
-    for node in Ms:
-        ping_node(node, '10.0.0.200')  # Single ping to server or target
 
     CLI(net)
 
