@@ -8,6 +8,61 @@ from containernet.link import TCLink
 from mininet.log import info, setLogLevel
 from mininet.node import Controller, RemoteController
 
+import time
+import threading
+
+def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, total_seconds=3600):
+    """
+    Start iperf3 server on the 'server' node, and launch iperf3 clients
+    from all device groups with specified protocol and interval.
+
+    Args:
+        server: the Docker node running as iperf3 server
+        Ms, Zs, Ds, WCAMs, WLCAMs: lists of DockerSta or Docker nodes
+        total_seconds: total testing time in seconds (default 1 hour)
+    """
+    def run_iperf_client(node, protocol, time_step):
+        flag = '' if protocol == 'TCP' else '-u'
+        elapsed = 0
+        while elapsed < total_seconds:
+            cmd = f'iperf3 -c 10.0.0.200 -t 1 {flag}'
+            result = node.cmd(cmd)
+            print(f"[{node.name}] {protocol} result at {elapsed}s:\n{result}")
+            time.sleep(time_step)
+            elapsed += time_step
+
+    # Start iperf3 server in daemon mode
+    print("*** Starting iperf3 server on 'server'")
+    server.cmd('iperf3 -s -D')
+
+    nodes = Ms + Zs + Ds + WCAMs + WLCAMs
+
+    for node in nodes:
+        if 'm' in node.name:
+            protocol = 'TCP'
+            time_step = 1
+        elif 'z' in node.name:
+            protocol = 'UDP'
+            time_step = 5
+        elif 'd' in node.name:
+            protocol = 'UDP'
+            time_step = 3
+        elif 'wcam' in node.name:
+            protocol = 'TCP'
+            time_step = 1
+        elif 'wlcam' in node.name:
+            protocol = 'UDP'
+            time_step = 1
+        else:
+            continue
+
+        threading.Thread(
+            target=run_iperf_client,
+            args=(node, protocol, time_step),
+            daemon=True
+        ).start()
+
+
 def topology():
     net = Containernet()
 
@@ -203,6 +258,12 @@ def topology():
         ping_node(node, '10.0.0.200')
     for node in WLCAMs:
         ping_node(node, '10.0.0.200')
+
+    # Generate traffic for all nodes
+    info('*** Generating traffic for all nodes\n')
+
+    
+    start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, total_seconds=20)  # 1 hour
 
     CLI(net)
 
