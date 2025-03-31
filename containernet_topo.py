@@ -11,6 +11,8 @@ from mininet.node import Controller, RemoteController
 import time
 import threading
 
+stop_flag = False  # Global flag to stop threads
+
 def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, total_seconds=3600):
     """
     Start iperf3 server on the 'server' node, and launch iperf3 clients
@@ -22,14 +24,16 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, total_seconds=3600):
         total_seconds: total testing time in seconds (default 1 hour)
     """
     def run_iperf_client(node, protocol, time_step):
+        global stop_flag
         flag = '' if protocol == 'TCP' else '-u'
         elapsed = 0
-        while elapsed < total_seconds:
+        while elapsed < total_seconds and not stop_flag:
             cmd = f'iperf3 -c 10.0.0.200 -t 1 {flag}'
             result = node.cmd(cmd)
             print(f"[{node.name}] {protocol} result at {elapsed}s:\n{result}")
             time.sleep(time_step)
             elapsed += time_step
+        print(f"[{node.name}] DONE after {elapsed}s")
 
     # Start iperf3 server in daemon mode
     print("*** Starting iperf3 server on 'server'")
@@ -61,6 +65,15 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, total_seconds=3600):
             args=(node, protocol, time_step),
             daemon=True
         ).start()
+
+    # Stop all threads after total_seconds
+    def stop_all():
+        global stop_flag
+        time.sleep(total_seconds)
+        stop_flag = True
+        print("\n*** All threads stopped after total_seconds ***\n")
+
+    threading.Thread(target=stop_all, daemon=True).start()
 
 
 def topology():
@@ -263,7 +276,7 @@ def topology():
     info('*** Generating traffic for all nodes\n')
 
     
-    start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, total_seconds=20)  # 1 hour
+    start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, total_seconds=60)  # 1 hour
 
     CLI(net)
 
