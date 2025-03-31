@@ -13,6 +13,8 @@ import threading
 
 stop_flag = False  # Global flag to stop threads
 
+stop_flag = False  # Global flag to stop threads
+
 def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, total_seconds=3600):
     """
     Start iperf3 server on the 'server' node, and launch iperf3 clients
@@ -23,9 +25,9 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, total_seconds=3600):
         Ms, Zs, Ds, WCAMs, WLCAMs: lists of DockerSta or Docker nodes
         total_seconds: total testing time in seconds (default 1 hour)
     """
-    def run_iperf_client(node, protocol, time_step):
+    def run_iperf_client(node, protocol, time_step, bandwidth=None):
         global stop_flag
-        flag = '' if protocol == 'TCP' else '-u'
+        flag = '' if protocol == 'TCP' else f'-u -b {bandwidth} -t 1' if bandwidth else '-u'
         elapsed = 0
         while elapsed < total_seconds and not stop_flag:
             cmd = f'iperf3 -c 10.0.0.200 -t 1 {flag}'
@@ -45,24 +47,29 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, total_seconds=3600):
         if 'm' in node.name:
             protocol = 'TCP'
             time_step = 1
+            bandwidth = None
         elif 'z' in node.name:
             protocol = 'UDP'
             time_step = 5
+            bandwidth = '0.02M'
         elif 'd' in node.name:
             protocol = 'UDP'
             time_step = 3
+            bandwidth = '0.03M'
         elif 'wcam' in node.name:
             protocol = 'TCP'
             time_step = 1
+            bandwidth = None
         elif 'wlcam' in node.name:
             protocol = 'UDP'
             time_step = 1
+            bandwidth = '1M'
         else:
             continue
 
         threading.Thread(
             target=run_iperf_client,
-            args=(node, protocol, time_step),
+            args=(node, protocol, time_step, bandwidth),
             daemon=True
         ).start()
 
