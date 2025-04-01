@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import time
 import threading
+
 from containernet.net import Containernet
 from containernet.node import DockerSta
 from containernet.cli import CLI
@@ -8,10 +9,6 @@ from containernet.link import TCLink
 from mininet.log import info, setLogLevel
 from mininet.node import Controller, RemoteController
 
-import time
-import threading
-
-stop_flag = False  # Global flag to stop threads
 
 stop_flag = False  # Global flag to stop threads
 
@@ -281,7 +278,6 @@ def topology():
 
     # Generate traffic for all nodes
     info('*** Generating traffic for all nodes\n')
-
     
     start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, total_seconds=60)  # 1 hour
 
