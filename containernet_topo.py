@@ -9,8 +9,8 @@ from containernet.link import TCLink
 from mininet.log import info, setLogLevel
 from mininet.node import Controller, RemoteController
 
-
-stop_flag = False  # Global flag to stop threads
+import time
+import threading
 
 def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, total_seconds=3600):
     """
@@ -22,12 +22,11 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, total_seconds=3600):
         Ms, Zs, Ds, WCAMs, WLCAMs: lists of DockerSta or Docker nodes
         total_seconds: total testing time in seconds (default 1 hour)
     """
+
     def run_iperf_client(node, protocol, time_step, bandwidth=None):
-        global stop_flag
-        flag = '' if protocol == 'TCP' else f'-u -b {bandwidth} -t 1' if bandwidth else '-u'
         elapsed = 0
-        while elapsed < total_seconds and not stop_flag:
-            cmd = f'iperf3 -c 10.0.0.200 -t 1 {flag}'
+        while elapsed < total_seconds:
+            cmd = f'iperf3 -c 10.0.0.200 -t 1 {f"-u -b {bandwidth} -t 1" if protocol == "UDP" else "-u" if bandwidth else ""}'
             result = node.cmd(cmd)
             print(f"[{node.name}] {protocol} result at {elapsed}s:\n{result}")
             time.sleep(time_step)
@@ -39,7 +38,68 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, total_seconds=3600):
     server.cmd('iperf3 -s -D')
 
     nodes = Ms + Zs + Ds + WCAMs + WLCAMs
+    threads = []
 
+    # Only UDP
+    for node in nodes:
+        if 'm' in node.name:
+            protocol = 'UDP'
+            time_step = 1
+            bandwidth = '0.01M'
+        elif 'z' in node.name:
+            protocol = 'UDP'
+            time_step = 5
+            bandwidth = '0.02M'
+        elif 'd' in node.name:
+            protocol = 'UDP'
+            time_step = 3
+            bandwidth = '0.03M'
+        elif 'wcam' in node.name:
+            protocol = 'UDP'
+            time_step = 1
+            bandwidth = '0.05M'
+        elif 'wlcam' in node.name:
+            protocol = 'UDP'
+            time_step = 1
+            bandwidth = '0.1M'
+        else:
+            continue
+        # Create and start the thread for each node
+        thread = threading.Thread(
+            target=run_iperf_client,
+            args=(node, protocol, time_step, bandwidth),
+            daemon=True
+        )
+        threads.append(thread)
+        thread.start()
+        
+    """      
+    # Only TCP
+    for node in nodes:
+        if 'm' in node.name:
+            protocol = 'TCP'
+            time_step = 1
+            bandwidth = None
+        elif 'z' in node.name:
+            protocol = 'TCP'
+            time_step = 5
+            bandwidth = None
+        elif 'd' in node.name:
+            protocol = 'TCP'
+            time_step = 3
+            bandwidth = None
+        elif 'wcam' in node.name:
+            protocol = 'TCP'
+            time_step = 1
+            bandwidth = None
+        elif 'wlcam' in node.name:
+            protocol = 'TCP'
+            time_step = 1
+            bandwidth = None
+        else:
+            continue  
+    
+    # TCP & UDP      
     for node in nodes:
         if 'm' in node.name:
             protocol = 'TCP'
@@ -62,23 +122,14 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, total_seconds=3600):
             time_step = 1
             bandwidth = '1M'
         else:
-            continue
+            continue    
+    """
 
-        threading.Thread(
-            target=run_iperf_client,
-            args=(node, protocol, time_step, bandwidth),
-            daemon=True
-        ).start()
+    # Wait for all threads to finish before proceeding to CLI
+    for thread in threads:
+        thread.join()
 
-    # Stop all threads after total_seconds
-    def stop_all():
-        global stop_flag
-        time.sleep(total_seconds)
-        stop_flag = True
-        print("\n*** All threads stopped after total_seconds ***\n")
-
-    threading.Thread(target=stop_all, daemon=True).start()
-
+    print("*** All iperf3 tests completed. Entering CLI now...")
 
 def topology():
     net = Containernet()
