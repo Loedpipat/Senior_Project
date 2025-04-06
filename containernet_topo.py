@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import time
+import random
 import threading
 
 from containernet.net import Containernet
@@ -9,24 +10,69 @@ from containernet.link import TCLink
 from mininet.log import info, setLogLevel
 from mininet.node import Controller, RemoteController
 
-import time
-import threading
+XL = 120
 
-def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, total_seconds=3600):
+def start_ping_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, total_seconds):
+    """
+    Start ping clients from all device groups (Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs) to the server node.
+    """
+
+    def run_ping_client(node, target_ip, time_step):
+        elapsed = 0
+        while elapsed < total_seconds:
+            result = node.cmd(f'ping -c 2 {target_ip}')
+            info(f"[{node.name}] Ping result at {elapsed}s:\n{result}")
+            time.sleep(time_step)
+            elapsed += time_step
+        info(f"[{node.name}] DONE after {elapsed}s")
+
+    # Target IP (the server node)
+    target_ip = "10.0.0.200"  # Server IP address
+
+    nodes = Ms + Zs + Ds + WCAMs + WLCAMs + MOVEs
+    threads = []
+
+    # Define time_step for each type of node (could be customized)
+    for node in nodes:
+        if 'm' in node.name:
+            time_step = 10
+        elif 'z' in node.name:
+            time_step = 15
+        elif 'd' in node.name:
+            time_step = 5
+        elif 'wcam' in node.name:
+            time_step = 1
+        elif 'wlcam' in node.name:
+            time_step = 2
+        elif 'move' in node.name:
+            time_step = 3
+        else:
+            continue
+        # Create and start the thread for each node
+        thread = threading.Thread(
+            target=run_ping_client,
+            args=(node, target_ip, time_step),
+            daemon=True
+        )
+        threads.append(thread)
+        thread.start()
+
+    # Wait for all threads to finish before proceeding
+    for thread in threads:
+        thread.join()
+
+    info("*** All ping tests completed.\n")
+
+def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, total_seconds):
     """
     Start iperf3 server on the 'server' node, and launch iperf3 clients
     from all device groups with specified protocol and interval.
-
-    Args:
-        server: the Docker node running as iperf3 server
-        Ms, Zs, Ds, WCAMs, WLCAMs: lists of DockerSta or Docker nodes
-        total_seconds: total testing time in seconds (default 1 hour)
     """
 
     def run_iperf_client(node, protocol, time_step, bandwidth=None):
         elapsed = 0
         while elapsed < total_seconds:
-            cmd = f'iperf3 -c 10.0.0.200 -t 1 {f"-u -b {bandwidth} -t 1" if protocol == "UDP" else "-u" if bandwidth else ""}'
+            cmd = f'iperf3 -c 10.0.0.200 {f"-u -b {bandwidth} -t 1" if protocol == "UDP" else "-u" if bandwidth else ""}'
             result = node.cmd(cmd)
             print(f"[{node.name}] {protocol} result at {elapsed}s:\n{result}")
             time.sleep(time_step)
@@ -37,22 +83,22 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, total_seconds=3600):
     print("*** Starting iperf3 server on 'server'")
     server.cmd('iperf3 -s -D')
 
-    nodes = Ms + Zs + Ds + WCAMs + WLCAMs
+    nodes = Ms + Zs + Ds + WCAMs + WLCAMs + MOVEs
     threads = []
 
     # Only UDP
     for node in nodes:
         if 'm' in node.name:
             protocol = 'UDP'
-            time_step = 1
+            time_step = 10
             bandwidth = '0.01M'
         elif 'z' in node.name:
             protocol = 'UDP'
-            time_step = 5
+            time_step = 15
             bandwidth = '0.02M'
         elif 'd' in node.name:
             protocol = 'UDP'
-            time_step = 3
+            time_step = 5
             bandwidth = '0.03M'
         elif 'wcam' in node.name:
             protocol = 'UDP'
@@ -60,7 +106,11 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, total_seconds=3600):
             bandwidth = '0.05M'
         elif 'wlcam' in node.name:
             protocol = 'UDP'
-            time_step = 1
+            time_step = 2
+            bandwidth = '0.1M'
+        elif 'move' in node.name:
+            protocol = 'UDP'
+            time_step = 3
             bandwidth = '0.1M'
         else:
             continue
@@ -96,6 +146,10 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, total_seconds=3600):
             protocol = 'TCP'
             time_step = 1
             bandwidth = None
+        elif 'move' in node.name:
+            protocol = 'TCP'
+            time_step = 3
+            bandwidth = None
         else:
             continue  
     
@@ -121,6 +175,10 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, total_seconds=3600):
             protocol = 'UDP'
             time_step = 1
             bandwidth = '1M'
+        elif 'move' in node.name:
+            protocol = 'UDP'
+            time_step = 3
+            bandwidth = '0.1M'
         else:
             continue    
     """
@@ -130,6 +188,64 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, total_seconds=3600):
         thread.join()
 
     print("*** All iperf3 tests completed. Entering CLI now...")
+
+# ฟังก์ชันการเคลื่อนที่แบบสุ่ม
+def move_randomly_with_pair(node, total_time=120):
+    # สร้างคู่ AP สำหรับแต่ละ move_node ตามที่ระบุ
+    ap_pairs = {
+        "move1": [1, 2],
+        "move2": [1, 2],
+        "move3": [3, 4],
+        "move4": [3, 4],
+        "move5": [5, 6],
+        "move6": [5, 6],
+        "move7": [7, 8],
+        "move8": [7, 8],
+        "move9": [9, 10],
+        "move10": [9, 10],
+    }
+
+    start_time = time.time()  # เริ่มจับเวลาที่เริ่มฟังก์ชัน
+    
+    while True:
+        # ตรวจสอบว่าเวลาที่ผ่านไปเกิน total_time หรือไม่
+        elapsed_time = time.time() - start_time
+        if elapsed_time >= total_time:
+            info(f"{node.name} has moved for {total_time} seconds. Stopping movement.\n")
+            break  # หยุดการเคลื่อนที่เมื่อถึงเวลาที่กำหนด
+
+        # เลือกคู่ AP ที่เกี่ยวข้องกับ move_node
+        ap_pair_to_use = ap_pairs.get(node.name, None)
+        if ap_pair_to_use is None:
+            info(f"No ap pair defined for {node.name}, skipping movement.\n")
+            break
+
+        # เลือก AP แบบสุ่มจากคู่ AP ที่เลือก
+        target_ap = random.choice(ap_pair_to_use)
+        target_ssid = f"AP{target_ap}"  # ตั้งชื่อ SSID ตามหมายเลข AP
+        
+        # Wait for the node to be ready before sending cmd
+        if node.waiting:  # ตรวจสอบว่าโหนดยังค้างอยู่หรือไม่
+            info(f"{node.name} is waiting, skipping this cycle.\n")
+            time.sleep(1)
+            continue
+
+        # Check if shell is available
+        if node.shell:
+            # เชื่อมต่อกับ AP
+            node.cmd(f"iw dev {node.name}-wlan0 connect {target_ssid}")
+            time.sleep(5)  # ให้เวลาเชื่อมต่อ 2 วินาที
+
+            # ตรวจสอบสถานะการเชื่อมต่อ
+            output = node.cmd(f"iw dev {node.name}-wlan0 info")
+            if "Not-Associated" in output:
+                info(f"{node.name} failed to connect to {target_ssid}. Retrying...\n")
+            else:
+                info(f"{node.name} successfully moved to {target_ssid}\n")
+        else:
+            info(f"{node.name} shell is not available, retrying...\n")
+        
+        time.sleep(random.uniform(15, 20))  # Move every 5 to 10 seconds
 
 def topology():
     net = Containernet()
@@ -222,6 +338,23 @@ def topology():
         sta = net.addStation(f'wlcam{i}', ip=ip, mac=mac, cls=DockerSta, dimage="mininet-wifi-custom", cpus="0.5")
         WLCAMs.append(sta)
 
+    info("*** Adding Move Devices\n")
+    MOVEs = []
+    move_devices = [
+        ('10.0.1.6', '00:02:00:00:01:06'), ('10.0.2.6', '00:02:00:00:02:06'),
+        ('10.0.3.6', '00:02:00:00:03:06'), ('10.0.4.6', '00:02:00:00:04:06'),
+        ('10.0.5.6', '00:02:00:00:05:06'), ('10.0.6.6', '00:02:00:00:06:06'),
+        ('10.0.7.6', '00:02:00:00:07:06'), ('10.0.8.6', '00:02:00:00:08:06'),
+        ('10.0.9.6', '00:02:00:00:09:06'), ('10.0.10.6', '00:02:00:00:0A:06')
+    ]
+    for i, (ip, mac) in enumerate(move_devices, 1):
+        sta = net.addStation(f'move{i}', ip=ip, mac=mac, cls=DockerSta, dimage="mininet-wifi-custom", cpus="0.1")
+        MOVEs.append(sta)
+
+    # Start mobility (random walk) for move nodes
+    for move_node in MOVEs:
+        threading.Thread(target=move_randomly_with_pair, args=(move_node, XL), daemon=True).start()
+    
     info("*** Adding host (Network Server)\n")
     server = net.addDocker('server', ip='10.0.0.200', dimage="mininet-wifi-custom", cpus="1")
 
@@ -290,6 +423,8 @@ def topology():
         sta.cmd(f'iw dev {sta.name}-wlan0 connect ssid-ap{i + 1}')
     for i, sta in enumerate(WLCAMs):
         sta.cmd(f'iw dev {sta.name}-wlan0 connect ssid-ap{i + 1}')
+    for i, sta in enumerate(MOVEs):
+        sta.cmd(f'iw dev {sta.name}-wlan0 connect ssid-ap{i + 1}')
 
     info('*** Assigning static routes\n')
     for i, sta in enumerate(Ms):
@@ -300,6 +435,8 @@ def topology():
         sta.cmd(f'ifconfig {sta.name}-wlan0 10.0.{i+1}.3 netmask 255.255.0.0 up')
     for i, sta in enumerate(WLCAMs):
         sta.cmd(f'ifconfig {sta.name}-wlan0 10.0.{i+1}.5 netmask 255.255.0.0 up')
+    for i, sta in enumerate(MOVEs):
+        sta.cmd(f'ifconfig {sta.name}-wlan0 10.0.{i+1}.6 netmask 255.255.0.0 up')
 
     server.cmd('ifconfig server-eth0 10.0.0.200 netmask 255.255.0.0 up')
     Ms[0].cmd('ifconfig m1-eth0 10.0.1.1 netmask 255.255.0.0 up')
@@ -326,11 +463,18 @@ def topology():
         ping_node(node, '10.0.0.200')
     for node in WLCAMs:
         ping_node(node, '10.0.0.200')
+    for node in MOVEs:
+        ping_node(node, '10.0.0.200')
+
+    net.pingAll()
 
     # Generate traffic for all nodes
-    info('*** Generating traffic for all nodes\n')
-    
-    start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, total_seconds=60)  # 1 hour
+    # info('*** Generating traffic for all nodes\n')
+    # start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, 60)  # 1 hour
+
+    # Pinging for all nodes simultaneously
+    info('*** Pinging all nodes\n')
+    start_ping_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, XL)  # Ping for 10 seconds
 
     CLI(net)
 
