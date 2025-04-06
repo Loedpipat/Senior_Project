@@ -17,7 +17,7 @@ PASSWORD = 'admin'
 # Parameters for Q-learning
 LEARNING_RATE = 0.1
 DISCOUNT_FACTOR = 0.9
-EPISODES = 20
+EPISODES = 300
 EXPLORATION_RATE = 1.0  # Declare this variable before usage
 EXPLORATION_DECAY = 0.995
 
@@ -122,7 +122,7 @@ def update_openflow_flow(node_id, state, action):
     url_put = f"http://{ODL_IP}:{ODL_PORT}/restconf/config/opendaylight-inventory:nodes/node/{node_id}/flow-node-inventory:table/0/flow/{flow_id}"  # ใช้ HTTP
     response_put = requests.put(url_put, auth=HTTPBasicAuth(USERNAME, PASSWORD), json=flow_data, headers={"Content-Type": "application/json"}, verify=False)
 
-    if response_put.status_code == 200:
+    if response_put.status_code == 200 or response_put.status_code == 201:
         print(f"Successfully updated flow {flow_id} with cookie {cookie}!")
     else:
         print(f"Failed to update flow {flow_id}. Status code: {response_put.status_code}")
@@ -155,39 +155,40 @@ def q_learning():
                     # Only process flow entries where 'priority' exists and priority != 0
                     if table_id == 0:
                         for flow in table['flow']:
-                            flow_id = flow['id']
-                            priority = flow['priority']
-                            match = flow['match']
+                            if "#" not in flow['id']:
+                                flow_id = flow['id']
+                                priority = flow['priority']
+                                match = flow['match']
 
-                            # Get flow statistics such as duration, bytes, and packet count
-                            flow_stats = flow.get("opendaylight-flow-statistics:flow-statistics", {})
-                            duration = flow_stats.get("duration", {}).get("second", 0)
-                            n_bytes = flow_stats.get("byte-count", 0)
-                            n_packets = flow_stats.get("packet-count", 0)
+                                # Get flow statistics such as duration, bytes, and packet count
+                                flow_stats = flow.get("opendaylight-flow-statistics:flow-statistics", {})
+                                duration = flow_stats.get("duration", {}).get("second", 0)
+                                n_bytes = flow_stats.get("byte-count", 0)
+                                n_packets = flow_stats.get("packet-count", 0)
 
-                            state = (flow_id, flow['cookie'], json.dumps(match))  # Add cookie to state
+                                state = (flow_id, flow['cookie'], json.dumps(match))  # Add cookie to state
 
-                            # Initialize Q-table if not already present
-                            if state not in q_table:
-                                q_table[state] = {action: 0 for action in get_possible_actions(state)}
+                                # Initialize Q-table if not already present
+                                if state not in q_table:
+                                    q_table[state] = {action: 0 for action in get_possible_actions(state)}
 
-                            # Calculate the reward based on flow statistics
-                            reward = calculate_reward(duration, n_bytes, n_packets)
+                                # Calculate the reward based on flow statistics
+                                reward = calculate_reward(duration, n_bytes, n_packets)
 
-                            # Select action using epsilon-greedy policy
-                            if random.uniform(0, 1) < EXPLORATION_RATE:
-                                action = random.choice(get_possible_actions(state))  # Exploration
-                            else:
-                                action = max(q_table[state], key=q_table[state].get)  # Exploitation
+                                # Select action using epsilon-greedy policy
+                                if random.uniform(0, 1) < EXPLORATION_RATE:
+                                    action = random.choice(get_possible_actions(state))  # Exploration
+                                else:
+                                    action = max(q_table[state], key=q_table[state].get)  # Exploitation
 
-                            # Get next state (for simplicity, assume the same state here for the demonstration)
-                            next_state = state
+                                # Get next state (for simplicity, assume the same state here for the demonstration)
+                                next_state = state
 
-                            # Update Q-table with the chosen action and reward
-                            update_q_table(q_table, state, action, reward, next_state)
+                                # Update Q-table with the chosen action and reward
+                                update_q_table(q_table, state, action, reward, next_state)
 
-                            # Optionally, update OpenFlow flow entry based on action (simulated, real implementation needed)
-                            update_openflow_flow(node_id, state, action)
+                                # Optionally, update OpenFlow flow entry based on action (simulated, real implementation needed)
+                                update_openflow_flow(node_id, state, action)
 
         # Calculate and store time taken for this episode
         episode_duration = time.time() - start_time
