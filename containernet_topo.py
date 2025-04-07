@@ -10,7 +10,7 @@ from containernet.link import TCLink
 from mininet.log import info, setLogLevel
 from mininet.node import Controller, RemoteController
 
-XL = 600
+XL = 100
 
 def start_ping_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, total_seconds):
     """
@@ -72,7 +72,10 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, total_seconds)
     def run_iperf_client(node, protocol, time_step, bandwidth=None):
         elapsed = 0
         while elapsed < total_seconds:
-            cmd = f'iperf3 -c 10.0.0.200 {f"-u -b {bandwidth} -t 1" if protocol == "UDP" else "-u" if bandwidth else ""}'
+            if protocol == 'TCP':
+                cmd = f'iperf3 -c 10.0.0.200 -t 1 -i 1 {f"-b {bandwidth}" if bandwidth else ""}'  # TCP with optional bandwidth
+            elif protocol == 'UDP':
+                cmd = f'iperf3 -c 10.0.0.200 -u -t 1 -i 1 {f"-b {bandwidth}" if bandwidth else ""}'  # UDP with optional bandwidth
             result = node.cmd(cmd)
             print(f"[{node.name}] {protocol} result at {elapsed}s:\n{result}")
             time.sleep(time_step)
@@ -91,27 +94,27 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, total_seconds)
         if 'm' in node.name:
             protocol = 'UDP'
             time_step = 10
-            bandwidth = '0.01M'
+            bandwidth = '0.1M'
         elif 'z' in node.name:
             protocol = 'UDP'
             time_step = 15
-            bandwidth = '0.02M'
+            bandwidth = '0.2M'
         elif 'd' in node.name:
             protocol = 'UDP'
             time_step = 5
-            bandwidth = '0.03M'
+            bandwidth = '0.3M'
         elif 'wcam' in node.name:
             protocol = 'UDP'
             time_step = 1
-            bandwidth = '0.05M'
+            bandwidth = '0.5M'
         elif 'wlcam' in node.name:
             protocol = 'UDP'
             time_step = 2
-            bandwidth = '0.1M'
+            bandwidth = '1M'
         elif 'move' in node.name:
             protocol = 'UDP'
             time_step = 3
-            bandwidth = '0.1M'
+            bandwidth = '1M'
         else:
             continue
         # Create and start the thread for each node
@@ -129,58 +132,37 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, total_seconds)
         if 'm' in node.name:
             protocol = 'TCP'
             time_step = 1
-            bandwidth = None
+            bandwidth = '0.1M'
         elif 'z' in node.name:
             protocol = 'TCP'
             time_step = 5
-            bandwidth = None
+            bandwidth = '0.2M'
         elif 'd' in node.name:
             protocol = 'TCP'
             time_step = 3
-            bandwidth = None
+            bandwidth = '0.3M'
         elif 'wcam' in node.name:
             protocol = 'TCP'
             time_step = 1
-            bandwidth = None
+            bandwidth = '0.5M'
         elif 'wlcam' in node.name:
             protocol = 'TCP'
-            time_step = 1
-            bandwidth = None
-        elif 'move' in node.name:
-            protocol = 'TCP'
-            time_step = 3
-            bandwidth = None
-        else:
-            continue  
-    
-    # TCP & UDP      
-    for node in nodes:
-        if 'm' in node.name:
-            protocol = 'TCP'
-            time_step = 1
-            bandwidth = None
-        elif 'z' in node.name:
-            protocol = 'UDP'
-            time_step = 5
-            bandwidth = '0.02M'
-        elif 'd' in node.name:
-            protocol = 'UDP'
-            time_step = 3
-            bandwidth = '0.03M'
-        elif 'wcam' in node.name:
-            protocol = 'TCP'
-            time_step = 1
-            bandwidth = None
-        elif 'wlcam' in node.name:
-            protocol = 'UDP'
             time_step = 1
             bandwidth = '1M'
         elif 'move' in node.name:
-            protocol = 'UDP'
+            protocol = 'TCP'
             time_step = 3
-            bandwidth = '0.1M'
+            bandwidth = '1M'
         else:
-            continue    
+            continue
+        # Create and start the thread for each node
+        thread = threading.Thread(
+            target=run_iperf_client,
+            args=(node, protocol, time_step, bandwidth),
+            daemon=True
+        )
+        threads.append(thread)
+        thread.start()  
     """
 
     # Wait for all threads to finish before proceeding to CLI
@@ -351,10 +333,6 @@ def topology():
         sta = net.addStation(f'move{i}', ip=ip, mac=mac, cls=DockerSta, dimage="mininet-wifi-custom", cpus="0.1")
         MOVEs.append(sta)
 
-    # Start mobility (random walk) for move nodes
-    for move_node in MOVEs:
-        threading.Thread(target=move_randomly_with_pair, args=(move_node, XL+140), daemon=True).start()
-    
     info("*** Adding host (Network Server)\n")
     server = net.addDocker('server', ip='10.0.0.200', dimage="mininet-wifi-custom", cpus="1")
 
@@ -468,13 +446,19 @@ def topology():
 
     net.pingAll()
 
+    # Start mobility (random walk) for move nodes
+    for move_node in MOVEs:
+        threading.Thread(target=move_randomly_with_pair, args=(move_node, XL), daemon=True).start()
+    
+
     # Generate traffic for all nodes
-    # info('*** Generating traffic for all nodes\n')
-    # start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, XL)  # 1 hour
+    info('*** Generating traffic for all nodes\n')
+    
+    start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, XL)  # 1 hour
 
     # Pinging for all nodes simultaneously
-    info('*** Pinging all nodes\n')
-    start_ping_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, XL)  # Ping for 10 seconds
+    # info('*** Pinging all nodes\n')
+    # start_ping_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, XL)  # Ping for 10 seconds
 
     CLI(net)
 
