@@ -10,7 +10,7 @@ from containernet.link import TCLink
 from mininet.log import info, setLogLevel
 from mininet.node import Controller, RemoteController
 
-XL = 120
+XL = 600
 
 def start_ping_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, total_seconds):
     """
@@ -190,7 +190,7 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, total_seconds)
     print("*** All iperf3 tests completed. Entering CLI now...")
 
 # ฟังก์ชันการเคลื่อนที่แบบสุ่ม
-def move_randomly_with_pair(node, total_time=120):
+def move_randomly_with_pair(node, total_time):
     # สร้างคู่ AP สำหรับแต่ละ move_node ตามที่ระบุ
     ap_pairs = {
         "move1": [1, 2],
@@ -353,7 +353,7 @@ def topology():
 
     # Start mobility (random walk) for move nodes
     for move_node in MOVEs:
-        threading.Thread(target=move_randomly_with_pair, args=(move_node, XL), daemon=True).start()
+        threading.Thread(target=move_randomly_with_pair, args=(move_node, XL+140), daemon=True).start()
     
     info("*** Adding host (Network Server)\n")
     server = net.addDocker('server', ip='10.0.0.200', dimage="mininet-wifi-custom", cpus="1")
@@ -470,7 +470,7 @@ def topology():
 
     # Generate traffic for all nodes
     # info('*** Generating traffic for all nodes\n')
-    # start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, 60)  # 1 hour
+    # start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, XL)  # 1 hour
 
     # Pinging for all nodes simultaneously
     info('*** Pinging all nodes\n')
