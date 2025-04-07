@@ -80,7 +80,6 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, total_seconds)
             print(f"[{node.name}] {protocol} result at {elapsed}s:\n{result}")
             time.sleep(time_step)
             elapsed += time_step
-            time.sleep(random.uniform(5, 10))  # Sleep to allow movement during iperf test
         print(f"[{node.name}] DONE after {elapsed}s")
 
     # Start iperf3 server in daemon mode
@@ -90,70 +89,32 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, total_seconds)
     nodes = Ms + Zs + Ds + WCAMs + WLCAMs + MOVEs
     threads = []
 
-    # Only TCP
+    # Only UDP
     for node in nodes:
         if 'm' in node.name:
-            protocol = 'TCP'
-            time_step = 1
-            bandwidth = '0.1M'
+            protocol = 'UDP'
+            time_step = 10
+            bandwidth = '0.01M'
         elif 'z' in node.name:
-            protocol = 'TCP'
-            time_step = 5
-            bandwidth = '0.2M'
+            protocol = 'UDP'
+            time_step = 15
+            bandwidth = '0.02M'
         elif 'd' in node.name:
-            protocol = 'TCP'
-            time_step = 3
-            bandwidth = '0.3M'
+            protocol = 'UDP'
+            time_step = 5
+            bandwidth = '0.03M'
         elif 'wcam' in node.name:
-            protocol = 'TCP'
+            protocol = 'UDP'
             time_step = 1
-            bandwidth = '0.5M'
+            bandwidth = '0.05M'
         elif 'wlcam' in node.name:
-            protocol = 'TCP'
-            time_step = 1
-            bandwidth = '1M'
-        elif 'move' in node.name:
-            protocol = 'TCP'
-            time_step = 3
-            bandwidth = '1M'
-        else:
-            continue
-        # Create and start the thread for each node
-        thread = threading.Thread(
-            target=run_iperf_client,
-            args=(node, protocol, time_step, bandwidth),
-            daemon=True
-        )
-        threads.append(thread)
-        thread.start()
-     
-    '''   
-    # Only TCP
-    for node in nodes:
-        if 'm' in node.name:
-            protocol = 'TCP'
-            time_step = 1
+            protocol = 'UDP'
+            time_step = 2
             bandwidth = '0.1M'
-        elif 'z' in node.name:
-            protocol = 'TCP'
-            time_step = 5
-            bandwidth = '0.2M'
-        elif 'd' in node.name:
-            protocol = 'TCP'
-            time_step = 3
-            bandwidth = '0.3M'
-        elif 'wcam' in node.name:
-            protocol = 'TCP'
-            time_step = 1
-            bandwidth = '0.5M'
-        elif 'wlcam' in node.name:
-            protocol = 'TCP'
-            time_step = 1
-            bandwidth = '1M'
         elif 'move' in node.name:
-            protocol = 'TCP'
+            protocol = 'UDP'
             time_step = 3
-            bandwidth = '1M'
+            bandwidth = '0.1M'
         else:
             continue
         # Create and start the thread for each node
@@ -165,7 +126,65 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, total_seconds)
         threads.append(thread)
         thread.start()
         
-    '''
+    """      
+    # Only TCP
+    for node in nodes:
+        if 'm' in node.name:
+            protocol = 'TCP'
+            time_step = 1
+            bandwidth = None
+        elif 'z' in node.name:
+            protocol = 'TCP'
+            time_step = 5
+            bandwidth = None
+        elif 'd' in node.name:
+            protocol = 'TCP'
+            time_step = 3
+            bandwidth = None
+        elif 'wcam' in node.name:
+            protocol = 'TCP'
+            time_step = 1
+            bandwidth = None
+        elif 'wlcam' in node.name:
+            protocol = 'TCP'
+            time_step = 1
+            bandwidth = None
+        elif 'move' in node.name:
+            protocol = 'TCP'
+            time_step = 3
+            bandwidth = None
+        else:
+            continue  
+    
+    # TCP & UDP      
+    for node in nodes:
+        if 'm' in node.name:
+            protocol = 'TCP'
+            time_step = 1
+            bandwidth = None
+        elif 'z' in node.name:
+            protocol = 'UDP'
+            time_step = 5
+            bandwidth = '0.02M'
+        elif 'd' in node.name:
+            protocol = 'UDP'
+            time_step = 3
+            bandwidth = '0.03M'
+        elif 'wcam' in node.name:
+            protocol = 'TCP'
+            time_step = 1
+            bandwidth = None
+        elif 'wlcam' in node.name:
+            protocol = 'UDP'
+            time_step = 1
+            bandwidth = '1M'
+        elif 'move' in node.name:
+            protocol = 'UDP'
+            time_step = 3
+            bandwidth = '0.1M'
+        else:
+            continue    
+    """
 
     # Wait for all threads to finish before proceeding to CLI
     for thread in threads:
