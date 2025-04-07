@@ -10,7 +10,7 @@ from containernet.link import TCLink
 from mininet.log import info, setLogLevel
 from mininet.node import Controller, RemoteController
 
-XL = 100
+XL = 1000
 
 def start_ping_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, total_seconds):
     """
@@ -89,6 +89,7 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, total_seconds)
     nodes = Ms + Zs + Ds + WCAMs + WLCAMs + MOVEs
     threads = []
 
+    """ 
     # Only UDP
     for node in nodes:
         if 'm' in node.name:
@@ -163,7 +164,7 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, total_seconds)
         )
         threads.append(thread)
         thread.start()  
-    """
+
 
     # Wait for all threads to finish before proceeding to CLI
     for thread in threads:
@@ -171,9 +172,9 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, total_seconds)
 
     print("*** All iperf3 tests completed. Entering CLI now...")
 
-# ฟังก์ชันการเคลื่อนที่แบบสุ่ม
+# ????????????????????????????
 def move_randomly_with_pair(node, total_time):
-    # สร้างคู่ AP สำหรับแต่ละ move_node ตามที่ระบุ
+    # ???????? AP ??????????? move_node ??????????
     ap_pairs = {
         "move1": [1, 2],
         "move2": [1, 2],
@@ -187,38 +188,38 @@ def move_randomly_with_pair(node, total_time):
         "move10": [9, 10],
     }
 
-    start_time = time.time()  # เริ่มจับเวลาที่เริ่มฟังก์ชัน
+    start_time = time.time()  # ????????????????????????????
     
     while True:
-        # ตรวจสอบว่าเวลาที่ผ่านไปเกิน total_time หรือไม่
+        # ??????????????????????????? total_time ???????
         elapsed_time = time.time() - start_time
         if elapsed_time >= total_time:
             info(f"{node.name} has moved for {total_time} seconds. Stopping movement.\n")
-            break  # หยุดการเคลื่อนที่เมื่อถึงเวลาที่กำหนด
+            break  # ?????????????????????????????????????
 
-        # เลือกคู่ AP ที่เกี่ยวข้องกับ move_node
+        # ???????? AP ???????????????? move_node
         ap_pair_to_use = ap_pairs.get(node.name, None)
         if ap_pair_to_use is None:
             info(f"No ap pair defined for {node.name}, skipping movement.\n")
             break
 
-        # เลือก AP แบบสุ่มจากคู่ AP ที่เลือก
+        # ????? AP ????????????? AP ????????
         target_ap = random.choice(ap_pair_to_use)
-        target_ssid = f"AP{target_ap}"  # ตั้งชื่อ SSID ตามหมายเลข AP
+        target_ssid = f"AP{target_ap}"  # ???????? SSID ?????????? AP
         
         # Wait for the node to be ready before sending cmd
-        if node.waiting:  # ตรวจสอบว่าโหนดยังค้างอยู่หรือไม่
+        if node.waiting:  # ????????????????????????????????
             info(f"{node.name} is waiting, skipping this cycle.\n")
             time.sleep(1)
             continue
 
         # Check if shell is available
         if node.shell:
-            # เชื่อมต่อกับ AP
+            # ???????????? AP
             node.cmd(f"iw dev {node.name}-wlan0 connect {target_ssid}")
-            time.sleep(5)  # ให้เวลาเชื่อมต่อ 2 วินาที
+            time.sleep(5)  # ???????????????? 2 ??????
 
-            # ตรวจสอบสถานะการเชื่อมต่อ
+            # ????????????????????????
             output = node.cmd(f"iw dev {node.name}-wlan0 info")
             if "Not-Associated" in output:
                 info(f"{node.name} failed to connect to {target_ssid}. Retrying...\n")
@@ -359,16 +360,16 @@ def topology():
         net.addLink(WCAMs[i], eval(ap), cls=TCLink, delay='10ms', bw=5)
 
     # Core network connections (up to s10)
-    net.addLink(switches['s1'], switches['s6'], cls=TCLink, delay='10ms', bw=10)
-    net.addLink(switches['s2'], switches['s6'], cls=TCLink, delay='10ms', bw=10)
-    net.addLink(switches['s3'], switches['s7'], cls=TCLink, delay='10ms', bw=10)
-    net.addLink(switches['s4'], switches['s7'], cls=TCLink, delay='10ms', bw=10)
-    net.addLink(switches['s5'], switches['s7'], cls=TCLink, delay='10ms', bw=10)
+    net.addLink(switches['s1'], switches['s6'], cls=TCLink, delay='10ms', bw=15)
+    net.addLink(switches['s2'], switches['s6'], cls=TCLink, delay='10ms', bw=15)
+    net.addLink(switches['s3'], switches['s7'], cls=TCLink, delay='10ms', bw=15)
+    net.addLink(switches['s4'], switches['s7'], cls=TCLink, delay='10ms', bw=15)
+    net.addLink(switches['s5'], switches['s7'], cls=TCLink, delay='10ms', bw=15)
 
-    net.addLink(switches['s6'], switches['s8'], cls=TCLink, delay='10ms', bw=10)
-    net.addLink(switches['s7'], switches['s9'], cls=TCLink, delay='10ms', bw=10)
-    net.addLink(switches['s8'], switches['s10'], cls=TCLink, delay='10ms', bw=10)
-    net.addLink(switches['s9'], switches['s10'], cls=TCLink, delay='10ms', bw=10)
+    net.addLink(switches['s6'], switches['s8'], cls=TCLink, delay='10ms', bw=15)
+    net.addLink(switches['s7'], switches['s9'], cls=TCLink, delay='10ms', bw=15)
+    net.addLink(switches['s8'], switches['s10'], cls=TCLink, delay='10ms', bw=15)
+    net.addLink(switches['s9'], switches['s10'], cls=TCLink, delay='10ms', bw=15)
 
     net.addLink(server, switches['s10'], cls=TCLink, delay='10ms', bw=10)
 
