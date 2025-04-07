@@ -6,7 +6,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # Update package list and install required packages
 RUN apt-get update && apt-get install -y \
-    iw wireless-tools ethtool iproute2 net-tools iperf3 && \
+    iw wireless-tools ethtool iproute2 net-tools iperf3 iputils-ping && \
     apt-get clean
 
 # Default command
