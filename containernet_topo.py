@@ -80,6 +80,7 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, total_seconds)
             print(f"[{node.name}] {protocol} result at {elapsed}s:\n{result}")
             time.sleep(time_step)
             elapsed += time_step
+            time.sleep(random.uniform(5, 10))  # Sleep to allow movement during iperf test
         print(f"[{node.name}] DONE after {elapsed}s")
 
     # Start iperf3 server in daemon mode
@@ -89,45 +90,6 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, total_seconds)
     nodes = Ms + Zs + Ds + WCAMs + WLCAMs + MOVEs
     threads = []
 
-    """ 
-    # Only UDP
-    for node in nodes:
-        if 'm' in node.name:
-            protocol = 'UDP'
-            time_step = 10
-            bandwidth = '0.1M'
-        elif 'z' in node.name:
-            protocol = 'UDP'
-            time_step = 15
-            bandwidth = '0.2M'
-        elif 'd' in node.name:
-            protocol = 'UDP'
-            time_step = 5
-            bandwidth = '0.3M'
-        elif 'wcam' in node.name:
-            protocol = 'UDP'
-            time_step = 1
-            bandwidth = '0.5M'
-        elif 'wlcam' in node.name:
-            protocol = 'UDP'
-            time_step = 2
-            bandwidth = '1M'
-        elif 'move' in node.name:
-            protocol = 'UDP'
-            time_step = 3
-            bandwidth = '1M'
-        else:
-            continue
-        # Create and start the thread for each node
-        thread = threading.Thread(
-            target=run_iperf_client,
-            args=(node, protocol, time_step, bandwidth),
-            daemon=True
-        )
-        threads.append(thread)
-        thread.start()
-        
-    """      
     # Only TCP
     for node in nodes:
         if 'm' in node.name:
@@ -163,8 +125,47 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, total_seconds)
             daemon=True
         )
         threads.append(thread)
-        thread.start()  
-
+        thread.start()
+     
+    '''   
+    # Only TCP
+    for node in nodes:
+        if 'm' in node.name:
+            protocol = 'TCP'
+            time_step = 1
+            bandwidth = '0.1M'
+        elif 'z' in node.name:
+            protocol = 'TCP'
+            time_step = 5
+            bandwidth = '0.2M'
+        elif 'd' in node.name:
+            protocol = 'TCP'
+            time_step = 3
+            bandwidth = '0.3M'
+        elif 'wcam' in node.name:
+            protocol = 'TCP'
+            time_step = 1
+            bandwidth = '0.5M'
+        elif 'wlcam' in node.name:
+            protocol = 'TCP'
+            time_step = 1
+            bandwidth = '1M'
+        elif 'move' in node.name:
+            protocol = 'TCP'
+            time_step = 3
+            bandwidth = '1M'
+        else:
+            continue
+        # Create and start the thread for each node
+        thread = threading.Thread(
+            target=run_iperf_client,
+            args=(node, protocol, time_step, bandwidth),
+            daemon=True
+        )
+        threads.append(thread)
+        thread.start()
+        
+    '''
 
     # Wait for all threads to finish before proceeding to CLI
     for thread in threads:
@@ -172,9 +173,8 @@ def start_iperf_clients(server, Ms, Zs, Ds, WCAMs, WLCAMs, MOVEs, total_seconds)
 
     print("*** All iperf3 tests completed. Entering CLI now...")
 
-# ????????????????????????????
+# Function to move devices randomly
 def move_randomly_with_pair(node, total_time):
-    # ???????? AP ??????????? move_node ??????????
     ap_pairs = {
         "move1": [1, 2],
         "move2": [1, 2],
@@ -188,38 +188,31 @@ def move_randomly_with_pair(node, total_time):
         "move10": [9, 10],
     }
 
-    start_time = time.time()  # ????????????????????????????
+    start_time = time.time()
     
     while True:
-        # ??????????????????????????? total_time ???????
         elapsed_time = time.time() - start_time
         if elapsed_time >= total_time:
             info(f"{node.name} has moved for {total_time} seconds. Stopping movement.\n")
-            break  # ?????????????????????????????????????
+            break
 
-        # ???????? AP ???????????????? move_node
         ap_pair_to_use = ap_pairs.get(node.name, None)
         if ap_pair_to_use is None:
             info(f"No ap pair defined for {node.name}, skipping movement.\n")
             break
 
-        # ????? AP ????????????? AP ????????
         target_ap = random.choice(ap_pair_to_use)
-        target_ssid = f"AP{target_ap}"  # ???????? SSID ?????????? AP
-        
-        # Wait for the node to be ready before sending cmd
-        if node.waiting:  # ????????????????????????????????
+        target_ssid = f"AP{target_ap}"
+
+        if node.waiting:
             info(f"{node.name} is waiting, skipping this cycle.\n")
             time.sleep(1)
             continue
 
-        # Check if shell is available
         if node.shell:
-            # ???????????? AP
             node.cmd(f"iw dev {node.name}-wlan0 connect {target_ssid}")
-            time.sleep(5)  # ???????????????? 2 ??????
+            time.sleep(5)
 
-            # ????????????????????????
             output = node.cmd(f"iw dev {node.name}-wlan0 info")
             if "Not-Associated" in output:
                 info(f"{node.name} failed to connect to {target_ssid}. Retrying...\n")
@@ -228,7 +221,8 @@ def move_randomly_with_pair(node, total_time):
         else:
             info(f"{node.name} shell is not available, retrying...\n")
         
-        time.sleep(random.uniform(15, 20))  # Move every 5 to 10 seconds
+        time.sleep(random.uniform(10, 15))  # Move every 10 to 15 seconds
+
 
 def topology():
     net = Containernet()
@@ -333,7 +327,8 @@ def topology():
     for i, (ip, mac) in enumerate(move_devices, 1):
         sta = net.addStation(f'move{i}', ip=ip, mac=mac, cls=DockerSta, dimage="mininet-wifi-custom", cpus="0.1")
         MOVEs.append(sta)
-
+        
+        
     info("*** Adding host (Network Server)\n")
     server = net.addDocker('server', ip='10.0.0.200', dimage="mininet-wifi-custom", cpus="1")
 
@@ -445,9 +440,7 @@ def topology():
     for node in MOVEs:
         ping_node(node, '10.0.0.200')
 
-    net.pingAll()
-
-    # Start mobility (random walk) for move nodes
+    # Start the mobility and iperf clients at the same time
     for move_node in MOVEs:
         threading.Thread(target=move_randomly_with_pair, args=(move_node, XL), daemon=True).start()
     
